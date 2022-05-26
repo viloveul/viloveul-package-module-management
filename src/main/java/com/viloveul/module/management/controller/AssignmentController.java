@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "/assignment")
+@RequestMapping(path = "${viloveul.controller.assignment:/assignment}")
 public class AssignmentController {
 
     @Autowired

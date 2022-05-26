@@ -32,7 +32,7 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
-@RequestMapping(path = "/group")
+@RequestMapping(path = "${viloveul.controller.group:/group}")
 public class GroupController {
 
     @Autowired

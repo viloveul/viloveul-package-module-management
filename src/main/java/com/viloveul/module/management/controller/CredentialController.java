@@ -28,7 +28,7 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
-@RequestMapping(path = "/credential")
+@RequestMapping(path = "${viloveul.controller.credential:/credential}")
 public class CredentialController {
 
     @Autowired

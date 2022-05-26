@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "/scope")
+@RequestMapping(path = "${viloveul.controller.scope:/scope}")
 public class ScopeController {
 
     @Autowired

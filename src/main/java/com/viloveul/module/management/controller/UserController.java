@@ -30,7 +30,7 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
-@RequestMapping(path = "/user")
+@RequestMapping(path = "${viloveul.controller.user:/user}")
 public class UserController {
 
     @Autowired

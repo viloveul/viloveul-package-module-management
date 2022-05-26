@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 @RestController
-@RequestMapping(path = "/session")
+@RequestMapping(path = "${viloveul.controller.session:/session}")
 public class SessionController {
 
     @Autowired

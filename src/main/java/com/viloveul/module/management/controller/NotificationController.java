@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 @RestController
-@RequestMapping(path = "/notification")
+@RequestMapping(path = "${viloveul.controller.notification:/notification}")
 public class NotificationController {
 
     @Autowired

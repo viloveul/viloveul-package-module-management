@@ -29,7 +29,7 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
-@RequestMapping(path = "/privilege")
+@RequestMapping(path = "${viloveul.controller.privilege:/privilege")
 public class PrivilegeController {
 
     @Autowired

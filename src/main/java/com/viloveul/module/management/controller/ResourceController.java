@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "/resource")
+@RequestMapping(path = "${viloveul.controller.resource:/resource}")
 public class ResourceController {
 
     @Autowired
