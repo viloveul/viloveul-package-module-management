@@ -2,7 +2,7 @@ package com.viloveul.module.management.data.entity;
 
 import com.viloveul.context.base.AbstractFullEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.viloveul.context.auth.AccessControl;
 import lombok.EqualsAndHashCode;
@@ -21,10 +21,10 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "tprefix_assignment", schema = "schema")
+@Table(name = "tbl_assignment", schema = "schema")
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @AccessControl(resource = "ASSIGNMENT")
 public class Assignment extends AbstractFullEntity {
 

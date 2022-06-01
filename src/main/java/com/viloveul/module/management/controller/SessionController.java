@@ -1,7 +1,7 @@
 package com.viloveul.module.management.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.viloveul.context.filter.SearchProperties;
+import com.viloveul.context.filter.SearchPropertyAuthorization;
 import com.viloveul.module.management.service.ResourceService;
 import com.viloveul.context.util.misc.PageableResult;
 import com.viloveul.module.management.data.entity.Session;
@@ -31,10 +31,10 @@ public class SessionController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional(readOnly = true)
     @PreAuthorize("hasPermission('SESSION', 'SEARCH')")
-    @SearchProperties(
+    @SearchPropertyAuthorization(
         resource = "SESSION",
         operation = "SEARCH",
-        allows = @SearchProperties.Allow(field = "user.id", option = SearchProperties.Option.USER)
+        allows = @SearchPropertyAuthorization.Allow(field = "user.id", option = SearchPropertyAuthorization.Option.USER)
     )
     public PageableResult<Session> search(
         Pageable pageable,

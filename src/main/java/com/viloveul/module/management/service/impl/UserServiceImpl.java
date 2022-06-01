@@ -181,8 +181,8 @@ public class UserServiceImpl extends AbstractComponent implements UserService, A
     @Override
     public Access registerAccessCustomizer() {
         return new DefaultAccess<User>("USER",
-            (authentication, operation) -> (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(FieldHelper.fillFieldSelector(root, "group.id"), authentication.getGroup().getId()),
-            handler -> false
+            authentication -> (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(FieldHelper.fillFieldSelector(root, "group.id"), authentication.getGroup().getId()),
+            handler -> 0 < this.userRepository.count(handler.specification().and((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), handler.object())))
         );
     }
 }

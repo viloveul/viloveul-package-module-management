@@ -1,7 +1,8 @@
 package com.viloveul.module.management.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.viloveul.context.filter.SearchProperties;
+import com.viloveul.context.filter.SearchPropertyAuthorization;
+import com.viloveul.context.util.misc.ActivityRecord;
 import com.viloveul.module.management.service.ResourceService;
 import com.viloveul.context.util.misc.PageableResult;
 import com.viloveul.module.management.data.entity.Credential;
@@ -39,13 +40,13 @@ public class CredentialController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional(readOnly = true)
-    @PreAuthorize("hasPermission('CREDENTIAL', 'SEARCH')")
-    @SearchProperties(
+    @PreAuthorize("hasPermission('CREDENTIAL', 'SEARCH') or hasPermission('CREDENTIAL', 'CREATE') or hasPermission('CREDENTIAL', 'DETAIL') or hasPermission('CREDENTIAL', 'DELETE') or hasPermission('CREDENTIAL', 'ACTIVATION')")
+    @SearchPropertyAuthorization(
         resource = "CREDENTIAL",
         operation = "SEARCH",
         allows = {
-            @SearchProperties.Allow(field = "user.id", option = SearchProperties.Option.USER),
-            @SearchProperties.Allow(field = "user.group.id", option = SearchProperties.Option.GROUP)
+            @SearchPropertyAuthorization.Allow(field = "user.id", option = SearchPropertyAuthorization.Option.USER),
+            @SearchPropertyAuthorization.Allow(field = "user.group.id", option = SearchPropertyAuthorization.Option.GROUP)
         }
     )
     public PageableResult<Credential> search(
@@ -79,7 +80,7 @@ public class CredentialController {
 
     @Transactional(readOnly = true)
     @GetMapping(path = "/{id}")
-    @PreAuthorize("hasPermission(#id, 'CREDENTIAL', 'DETAIL')")
+    @PreAuthorize("hasPermission(#id, 'CREDENTIAL', 'DETAIL') or hasPermission(#id, 'CREDENTIAL', 'ACTIVATION') or hasPermission(#id, 'CREDENTIAL', 'DELETE')")
     public ResponseEntity<Credential> detail(@PathVariable("id") String id) {
         return new ResponseEntity<>(this.credentialService.detail(id), HttpStatus.OK);
     }
@@ -87,6 +88,7 @@ public class CredentialController {
     @PostMapping
     @Transactional
     @PreAuthorize("hasPermission('CREDENTIAL', 'CREATE')")
+    @ActivityRecord(payload = false)
     public ResponseEntity<Credential> create(@RequestBody @Valid CredentialForm form) {
         return new ResponseEntity<>(this.credentialService.create(form), HttpStatus.CREATED);
     }

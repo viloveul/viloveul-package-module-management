@@ -51,8 +51,7 @@ public class ScopeServiceImpl implements ScopeService {
 
     @Override
     public void delete(String id) {
-        Optional<Scope> scope = this.scopeRepository.findById(id);
-        scope.ifPresent(this::delete);
+        this.scopeRepository.deleteById(id);
     }
 
     @Override

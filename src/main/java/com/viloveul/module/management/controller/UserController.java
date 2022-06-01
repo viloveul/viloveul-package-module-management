@@ -1,7 +1,7 @@
 package com.viloveul.module.management.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.viloveul.context.filter.SearchProperties;
+import com.viloveul.context.filter.SearchPropertyAuthorization;
 import com.viloveul.module.management.data.entity.User;
 import com.viloveul.module.management.pojo.UserForm;
 import com.viloveul.module.management.search.UserSpecification;
@@ -47,13 +47,13 @@ public class UserController {
 
     @Transactional(readOnly = true)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasPermission('USER', 'SEARCH')")
-    @SearchProperties(
+    @PreAuthorize("hasPermission('USER', 'SEARCH') or hasPermission('USER', 'ACTIVATION') or hasPermission('USER', 'CREATE') or hasPermission('USER', 'DETAIL') or hasPermission('USER', 'DELETE') or hasPermission('USER', 'UPDATE')")
+    @SearchPropertyAuthorization(
         resource = "USER",
         operation = "SEARCH",
         allows = {
-            @SearchProperties.Allow(field = "id", option = SearchProperties.Option.USER),
-            @SearchProperties.Allow(field = "group.id", option = SearchProperties.Option.GROUP)
+            @SearchPropertyAuthorization.Allow(field = "id", option = SearchPropertyAuthorization.Option.USER),
+            @SearchPropertyAuthorization.Allow(field = "group.id", option = SearchPropertyAuthorization.Option.GROUP)
         }
     )
     public PageableResult<User> search(
@@ -79,7 +79,7 @@ public class UserController {
 
     @GetMapping(path = "/{id}")
     @Transactional(readOnly = true)
-    @PreAuthorize("hasPermission(#id, 'USER', 'DETAIL')")
+    @PreAuthorize("hasPermission(#id, 'USER', 'DETAIL') or hasPermission(#id, 'USER', 'ACTIVATION') or hasPermission(#id, 'USER', 'DELETE') or hasPermission(#id, 'USER', 'UPDATE')")
     public ResponseEntity<User> detail(@PathVariable("id") String id) {
         return new ResponseEntity<>(this.userService.detail(id), HttpStatus.OK);
     }

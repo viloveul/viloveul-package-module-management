@@ -99,7 +99,7 @@ public class NotificationServiceImpl extends AbstractComponent implements Notifi
     @Override
     public Access registerAccessCustomizer() {
         return new DefaultAccess<Notification>("NOTIFICATION",
-            (authentication, operation) -> (root, criteriaQuery, criteriaBuilder) -> {
+            authentication -> (root, criteriaQuery, criteriaBuilder) -> {
                 String id = authentication.getId();
                 Predicate userPredicate = criteriaBuilder.and(
                     criteriaBuilder.equal(root.get("principal"), id),
@@ -123,7 +123,7 @@ public class NotificationServiceImpl extends AbstractComponent implements Notifi
                 }
                 return predicates.isEmpty() ? userPredicate : criteriaBuilder.or(userPredicate, criteriaBuilder.or(predicates.toArray(new Predicate[0])));
             },
-            handler -> 0 < this.notificationRepository.count(handler.specification().and((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), handler.evaluator().getObject())))
+            handler -> 0 < this.notificationRepository.count(handler.specification().and((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), handler.object())))
         );
     }
 }

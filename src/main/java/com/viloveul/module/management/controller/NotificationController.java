@@ -1,7 +1,7 @@
 package com.viloveul.module.management.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.viloveul.context.filter.SearchProperties;
+import com.viloveul.context.filter.SearchPropertyAuthorization;
 import com.viloveul.context.util.misc.PageableResult;
 import com.viloveul.module.management.data.entity.Notification;
 import com.viloveul.module.management.search.NotificationSpecification;
@@ -29,11 +29,11 @@ public class NotificationController {
 
     @Transactional(readOnly = true)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @SearchProperties(
+    @SearchPropertyAuthorization(
         resource = "NOTIFICATION",
-        operation = "SEARCH",
-        customizer = true
+        operation = "SEARCH"
     )
+    @PreAuthorize("hasPermission('NOTIFICATION', 'SEARCH') or hasPermission('NOTIFICATION', 'DETAIL') or hasPermission('NOTIFICATION', 'READ')")
     public PageableResult<Notification> search(
         Pageable pageable,
         NotificationSpecification filter
@@ -49,7 +49,7 @@ public class NotificationController {
 
     @Transactional
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasPermission(#id, 'NOTIFICATION', 'DETAIL')")
+    @PreAuthorize("hasPermission(#id, 'NOTIFICATION', 'DETAIL') or hasPermission(#id, 'NOTIFICATION', 'READ')")
     public ResponseEntity<Notification> detail(@PathVariable("id") String id) {
         return new ResponseEntity<>(this.notificationService.read(id), HttpStatus.OK);
     }

@@ -42,6 +42,11 @@ public class ResourceServiceImpl extends AbstractComponent implements ResourceSe
     }
 
     @Override
+    public void delete(String id) {
+        this.resourceRepository.deleteById(id);
+    }
+
+    @Override
     public Resource detail(String id) {
         Optional<Resource> result = this.resourceRepository.findById(id);
         if (!result.isPresent()) {

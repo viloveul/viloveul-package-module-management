@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "tprefix_session", schema = "schema")
+@Table(name = "tbl_session")
 @EqualsAndHashCode(callSuper = true)
 @AccessControl(resource = "SESSION")
 public class Session extends AbstractFullEntity {

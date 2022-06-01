@@ -1,7 +1,7 @@
 package com.viloveul.module.management.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.viloveul.context.filter.SearchProperties;
+import com.viloveul.context.filter.SearchPropertyAuthorization;
 import com.viloveul.module.management.data.entity.Group;
 import com.viloveul.module.management.pojo.GroupForm;
 import com.viloveul.module.management.search.GroupSpecification;
@@ -52,8 +52,8 @@ public class GroupController {
 
     @Transactional(readOnly = true)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasPermission('GROUP', 'SEARCH')")
-    @SearchProperties(
+    @PreAuthorize("hasPermission('GROUP', 'SEARCH') or hasPermission('GROUP', 'CREATE') or hasPermission('GROUP', 'DETAIL') or hasPermission('GROUP', 'DELETE') or hasPermission('GROUP', 'ACTIVATION') or hasPermission('GROUP', 'UPDATE')")
+    @SearchPropertyAuthorization(
         resource = "GROUP",
         operation = "SEARCH"
     )
@@ -77,7 +77,7 @@ public class GroupController {
 
     @GetMapping(path = "/{id}")
     @Transactional(readOnly = true)
-    @PreAuthorize("hasPermission(#id, 'GROUP', 'DETAIL')")
+    @PreAuthorize("hasPermission(#id, 'GROUP', 'DETAIL') or hasPermission(#id, 'GROUP', 'ACTIVATION') or hasPermission(#id, 'GROUP', 'DELETE') or hasPermission(#id, 'GROUP', 'UPDATE')")
     public ResponseEntity<Group> detail(@PathVariable("id") String id) {
         return new ResponseEntity<>(this.groupService.detail(id), HttpStatus.OK);
     }

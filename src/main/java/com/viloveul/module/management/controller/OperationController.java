@@ -12,13 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -33,7 +27,7 @@ public class OperationController {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Transactional(readOnly = true)
-    @PreAuthorize("hasPermission('OPERATION', 'SEARCH')")
+    @PreAuthorize("hasPermission('OPERATION', 'SEARCH') or hasPermission('OPERATION', 'ACTIVATION') or hasPermission('OPERATION', 'CREATE') or hasPermission('OPERATION', 'DETAIL') or hasPermission('OPERATION', 'DELETE') or hasPermission('OPERATION', 'UPDATE')")
     public PageableResult<Operation> search(Pageable pageable, OperationSpecification filter) {
         return new PageableResult<>(this.operationService.search(filter, pageable));
     }
@@ -48,7 +42,7 @@ public class OperationController {
 
     @GetMapping(path = "/{id}")
     @Transactional(readOnly = true)
-    @PreAuthorize("hasPermission(#id, 'OPERATION', 'DETAIL')")
+    @PreAuthorize("hasPermission(#id, 'OPERATION', 'DETAIL') or hasPermission(#id, 'OPERATION', 'ACTIVATION') or hasPermission(#id, 'OPERATION', 'DELETE') or hasPermission(#id, 'OPERATION', 'UPDATE')")
     public ResponseEntity<Operation> detail(@PathVariable("id") String id) {
         return new ResponseEntity<>(this.operationService.detail(id), HttpStatus.OK);
     }
@@ -65,5 +59,13 @@ public class OperationController {
     @PreAuthorize("hasPermission('OPERATION', 'CREATE')")
     public ResponseEntity<Operation> create(@RequestBody @Valid OperationForm form) {
         return new ResponseEntity<>(this.operationService.create(form), HttpStatus.CREATED);
+    }
+
+    @Transactional
+    @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasPermission(#id, 'OPERATION', 'DELETE')")
+    public void delete(@PathVariable("id") String id) {
+        this.operationService.delete(id);
     }
 }

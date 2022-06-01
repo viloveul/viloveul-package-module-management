@@ -4,7 +4,7 @@ import com.viloveul.context.base.AbstractFullEntity;
 import com.viloveul.context.type.SecureType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.viloveul.context.auth.AccessControl;
 import lombok.EqualsAndHashCode;
@@ -21,8 +21,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "tprefix_credential", schema = "schema")
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@Table(name = "tbl_credential", schema = "schema")
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @AccessControl(resource = "CREDENTIAL")
 public class Credential extends AbstractFullEntity {
 

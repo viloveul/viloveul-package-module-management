@@ -2,7 +2,7 @@ package com.viloveul.module.management.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.viloveul.context.base.AbstractFullEntity;
 import com.viloveul.context.auth.AccessControl;
@@ -27,9 +27,9 @@ import java.util.Set;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "tprefix_group", schema = "schema")
+@Table(name = "tbl_group", schema = "schema")
 @EqualsAndHashCode(of = {"identity"}, callSuper = true)
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @AccessControl(resource = "GROUP")
 public class Group extends AbstractFullEntity implements GroupModel {
 

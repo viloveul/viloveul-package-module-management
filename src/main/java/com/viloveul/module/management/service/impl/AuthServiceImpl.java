@@ -28,15 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class AuthServiceImpl extends AbstractComponent implements AuthService {
@@ -87,7 +79,7 @@ public class AuthServiceImpl extends AbstractComponent implements AuthService {
             this.userRepository.getRelations(user)
         );
         auth.setSession(session.getId());
-        Set<Privilege> privileges = user.getPrivileges();
+        Set<Privilege> privileges = new HashSet<>(user.getPrivileges());
         if (!this.role.isEmpty()) {
             Privilege privilegeDefault = this.privilegeRepository.findByIdentity(this.role);
             if (privilegeDefault != null) {

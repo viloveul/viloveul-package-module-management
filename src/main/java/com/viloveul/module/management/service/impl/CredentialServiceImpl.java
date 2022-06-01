@@ -83,8 +83,8 @@ public class CredentialServiceImpl extends AbstractComponent implements Credenti
 
     @Override
     public Boolean delete(String id) {
-        Optional<Credential> credential = this.credentialRepository.findById(id);
-        return credential.isPresent() && this.delete(credential.get());
+        this.credentialRepository.deleteById(id);
+        return true;
     }
 
     @Override
@@ -103,16 +103,14 @@ public class CredentialServiceImpl extends AbstractComponent implements Credenti
             }
         }
         if (!toDeletes.isEmpty()) {
-            this.credentialRepository.saveAll(toDeletes);
+            this.credentialRepository.deleteAll(toDeletes);
         }
         return true;
     }
 
     @Override
     public Boolean delete(Credential credential) {
-        credential.setDeletedAt(new Date());
-        credential.setStatus(false);
-        this.credentialRepository.save(credential);
+        this.credentialRepository.delete(credential);
         return true;
     }
 
@@ -124,8 +122,8 @@ public class CredentialServiceImpl extends AbstractComponent implements Credenti
     @Override
     public Access registerAccessCustomizer() {
         return new DefaultAccess<Credential>("CREDENTIAL",
-            (authentication, operation) -> (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(FieldHelper.fillFieldSelector(root, "user.id"), authentication.getId()),
-            handler -> 0 < this.credentialRepository.count(handler.specification().and((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), handler.evaluator().getObject())))
+            authentication -> (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(FieldHelper.fillFieldSelector(root, "user.id"), authentication.getId()),
+            handler -> 0 < this.credentialRepository.count(handler.specification().and((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), handler.object())))
         );
     }
 }

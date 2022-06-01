@@ -1,7 +1,7 @@
 package com.viloveul.module.management.data.entity;
 
 import com.viloveul.context.base.AbstractMidEntity;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.viloveul.context.auth.AccessControl;
 import com.viloveul.context.type.PrincipalType;
@@ -25,9 +25,9 @@ import javax.validation.Valid;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "tprefix_notification", schema = "schema")
+@Table(name = "tbl_notification", schema = "schema")
 @EqualsAndHashCode(callSuper = true)
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @AccessControl(resource = "NOTIFICATION")
 public class Notification extends AbstractMidEntity {
 

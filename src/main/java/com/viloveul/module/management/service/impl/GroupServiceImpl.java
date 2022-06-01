@@ -99,18 +99,14 @@ public class GroupServiceImpl extends AbstractComponent implements GroupService,
                 )
             );
         }
-        groups.add(group);
         this.groupRepository.saveAll(groups);
+        this.groupRepository.delete(group);
         return true;
     }
 
     @Override
     public Boolean delete(String id) {
-        Optional<Group> result = this.groupRepository.findById(id);
-        if (result.isPresent()) {
-            return this.delete(result.get());
-        }
-        return false;
+        return this.delete(this.groupRepository.getOne(id));
     }
 
     @Override
@@ -205,7 +201,7 @@ public class GroupServiceImpl extends AbstractComponent implements GroupService,
     @Override
     public Access registerAccessCustomizer() {
         return new DefaultAccess<Group>("GROUP",
-            (authentication, operation) -> (root, criteriaQuery, criteriaBuilder) -> {
+            authentication -> (root, criteriaQuery, criteriaBuilder) -> {
                 Collection<Predicate> predicates = new ArrayList<>();
                 for (DetailAuthentication.GroupMapper group : authentication.getAbilities()) {
                     predicates.add(
@@ -214,7 +210,7 @@ public class GroupServiceImpl extends AbstractComponent implements GroupService,
                 }
                 return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
             },
-            handler -> 0 < this.groupRepository.count(handler.specification().and((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), handler.evaluator().getObject())))
+            handler -> 0 < this.groupRepository.count(handler.specification().and((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), handler.object())))
         );
     }
 }

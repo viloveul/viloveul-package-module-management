@@ -1,7 +1,7 @@
 package com.viloveul.module.management.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.viloveul.context.base.AbstractFullEntity;
 import com.viloveul.context.type.SignerType;
@@ -22,10 +22,10 @@ import java.util.Set;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "tprefix_user", schema = "schema")
+@Table(name = "tbl_user", schema = "schema")
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @AccessControl(resource = "USER")
 public class User extends AbstractFullEntity implements UserModel {
 
@@ -55,7 +55,7 @@ public class User extends AbstractFullEntity implements UserModel {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
-        name = "tprefix_user_privilege",
+        name = "tbl_user_privilege",
         joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "id_privilege", referencedColumnName = "id")
     )

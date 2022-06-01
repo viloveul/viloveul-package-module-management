@@ -14,11 +14,9 @@ import com.viloveul.module.management.service.CredentialService;
 import com.viloveul.module.management.service.UserService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.BeanIds;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,13 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.SecureRandom;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "${viloveul.controller.authentication:/authentication}")
 public class AuthController extends AbstractController {
 
     @Autowired(required = false)
-    @Qualifier(BeanIds.AUTHENTICATION_MANAGER)
     private AuthenticationManager authenticationManager;
 
     @Autowired(required = false)
@@ -63,7 +62,10 @@ public class AuthController extends AbstractController {
                 form.getPassword()
             )
         );
-        return this.tokenizer.generate(authentication.getDetails(), Tokenizer.USE_JWT);
+        Map<String, Object> result = new HashMap<>();
+        result.put("token", this.tokenizer.generate(authentication.getDetails(), Tokenizer.USE_JWT));
+        result.put("detail", authentication.getDetails());
+        return result;
     }
 
     @Transactional

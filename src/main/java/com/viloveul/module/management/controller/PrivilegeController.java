@@ -37,7 +37,7 @@ public class PrivilegeController {
 
     @Transactional(readOnly = true)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasPermission('PRIVILEGE', 'SEARCH')")
+    @PreAuthorize("hasPermission('PRIVILEGE', 'SEARCH') or hasPermission('PRIVILEGE', 'ACTIVATION') or hasPermission('PRIVILEGE', 'CREATE') or hasPermission('PRIVILEGE', 'DETAIL') or hasPermission('PRIVILEGE', 'DELETE') or hasPermission('PRIVILEGE', 'UPDATE')")
     public PageableResult<Privilege> search(Authentication authentication, Pageable pageable, PrivilegeSpecification filter) {
         DetailAuthentication authDetail = (DetailAuthentication) authentication.getDetails();
         if (authDetail.getType() == SignerType.USER) {
@@ -62,7 +62,7 @@ public class PrivilegeController {
 
     @GetMapping(path = "/{id}")
     @Transactional(readOnly = true)
-    @PreAuthorize("hasPermission(#id, 'PRIVILEGE', 'DETAIL')")
+    @PreAuthorize("hasPermission(#id, 'PRIVILEGE', 'DETAIL') or hasPermission(#id, 'PRIVILEGE', 'ACTIVATION') or hasPermission(#id, 'PRIVILEGE', 'DELETE') or hasPermission(#id, 'PRIVILEGE', 'UPDATE')")
     public ResponseEntity<Privilege> detail(@PathVariable("id") String id) {
         return new ResponseEntity<>(this.privilegeService.detail(id), HttpStatus.OK);
     }

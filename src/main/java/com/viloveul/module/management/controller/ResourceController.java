@@ -12,13 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -31,7 +25,7 @@ public class ResourceController {
 
     @Transactional(readOnly = true)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasPermission('RESOURCE', 'SEARCH')")
+    @PreAuthorize("hasPermission('RESOURCE', 'SEARCH') or hasPermission('RESOURCE', 'ACTIVATION') or hasPermission('RESOURCE', 'CREATE') or hasPermission('RESOURCE', 'DETAIL') or hasPermission('RESOURCE', 'DELETE') or hasPermission('RESOURCE', 'UPDATE')")
     public PageableResult<Resource> search(Pageable pageable, ResourceSpecification filter) {
         return new PageableResult<>(this.resourceService.search(filter, pageable));
     }
@@ -46,7 +40,7 @@ public class ResourceController {
 
     @GetMapping(path = "/{id}")
     @Transactional(readOnly = true)
-    @PreAuthorize("hasPermission(#id, 'RESOURCE', 'DETAIL')")
+    @PreAuthorize("hasPermission(#id, 'RESOURCE', 'DETAIL') or hasPermission(#id, 'RESOURCE', 'ACTIVATION') or hasPermission(#id, 'RESOURCE', 'DELETE') or hasPermission(#id, 'RESOURCE', 'UPDATE')")
     public ResponseEntity<Resource> detail(@PathVariable("id") String id) {
         return new ResponseEntity<>(this.resourceService.detail(id), HttpStatus.OK);
     }
@@ -63,5 +57,13 @@ public class ResourceController {
     @PreAuthorize("hasPermission('RESOURCE', 'CREATE')")
     public ResponseEntity<Resource> create(@RequestBody @Valid ResourceForm form) {
         return new ResponseEntity<>(this.resourceService.create(form), HttpStatus.CREATED);
+    }
+
+    @Transactional
+    @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasPermission(#id, 'RESOURCE', 'DELETE')")
+    public void delete(@PathVariable("id") String id) {
+        this.resourceService.delete(id);
     }
 }

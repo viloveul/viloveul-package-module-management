@@ -40,6 +40,11 @@ public class OperationServiceImpl extends AbstractComponent implements Operation
     }
 
     @Override
+    public void delete(String id) {
+        this.operationRepository.deleteById(id);
+    }
+
+    @Override
     public Operation detail(String id) {
         Optional<Operation> result = this.operationRepository.findById(id);
         if (!result.isPresent()) {

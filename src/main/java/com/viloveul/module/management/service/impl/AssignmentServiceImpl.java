@@ -66,10 +66,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public void delete(String id) {
-        Assignment assignment = this.assignmentRepository.getOne(id);
-        assignment.setDeletedAt(new Date());
-        assignment.setStatus(Boolean.FALSE);
-        this.assignmentRepository.save(assignment);
+        this.assignmentRepository.deleteById(id);
     }
 
     @Override

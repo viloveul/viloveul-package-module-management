@@ -1,6 +1,6 @@
 package com.viloveul.module.management.controller;
 
-import com.viloveul.context.filter.SearchProperties;
+import com.viloveul.context.filter.SearchPropertyAuthorization;
 import com.viloveul.context.util.misc.PageableResult;
 import com.viloveul.module.management.data.entity.Assignment;
 import com.viloveul.module.management.pojo.AssignmentForm;
@@ -33,11 +33,11 @@ public class AssignmentController {
 
     @Transactional(readOnly = true)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasPermission('ASSIGNMENT', 'SEARCH')")
-    @SearchProperties(
+    @PreAuthorize("hasPermission('ASSIGNMENT', 'SEARCH') or hasPermission('ASSIGNMENT', 'CREATE') or hasPermission('ASSIGNMENT', 'DETAIL') or hasPermission('ASSIGNMENT', 'DELETE') or hasPermission('ASSIGNMENT', 'ACTIVATION')")
+    @SearchPropertyAuthorization(
         resource = "ASSIGNMENT",
         operation = "SEARCH",
-        allows = @SearchProperties.Allow(field = "delegator.id", option = SearchProperties.Option.USER)
+        allows = @SearchPropertyAuthorization.Allow(field = "delegator.id", option = SearchPropertyAuthorization.Option.USER)
     )
     public PageableResult<Assignment> search(Pageable pageable, AssignmentSpecification filter) {
         return new PageableResult<>(
@@ -63,7 +63,7 @@ public class AssignmentController {
 
     @GetMapping(path = "/{id}")
     @Transactional(readOnly = true)
-    @PreAuthorize("hasPermission(#id, 'ASSIGNMENT', 'DETAIL')")
+    @PreAuthorize("hasPermission(#id, 'ASSIGNMENT', 'DETAIL') or hasPermission(#id, 'ASSIGNMENT', 'ACTIVATION') or hasPermission(#id, 'ASSIGNMENT', 'DELETE')")
     public ResponseEntity<Assignment> detail(@PathVariable("id") String id) {
         return new ResponseEntity<>(this.assignmentService.detail(id), HttpStatus.OK);
     }

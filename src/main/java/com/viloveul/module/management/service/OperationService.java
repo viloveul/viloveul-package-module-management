@@ -14,6 +14,8 @@ public interface OperationService {
 
     Operation update(String id, OperationForm form);
 
+    void delete(String id);
+
     Operation detail(String id);
 
     Operation find(String identity);

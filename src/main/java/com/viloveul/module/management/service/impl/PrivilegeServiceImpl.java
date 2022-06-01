@@ -87,8 +87,7 @@ public class PrivilegeServiceImpl extends AbstractComponent implements Privilege
     @Override
     public Boolean delete(@Valid Privilege privilege) {
         try {
-            privilege.setDeletedAt(new Date());
-            this.privilegeRepository.save(privilege);
+            this.privilegeRepository.delete(privilege);
             return true;
         } catch (RuntimeException e) {
             LOGGER.error(e.getMessage(), e.getCause());
@@ -98,11 +97,7 @@ public class PrivilegeServiceImpl extends AbstractComponent implements Privilege
 
     @Override
     public Boolean delete(String id) {
-        Optional<Privilege> result = this.privilegeRepository.findById(id);
-        if (result.isPresent()) {
-            return this.delete(result.get());
-        }
-        return false;
+        return this.delete(this.privilegeRepository.getOne(id));
     }
 
     @Override
@@ -163,8 +158,8 @@ public class PrivilegeServiceImpl extends AbstractComponent implements Privilege
     @Override
     public Access registerAccessCustomizer() {
         return new DefaultAccess<Privilege>("PRIVILEGE",
-            (authentication, operation) -> (root, criteriaQuery, criteriaBuilder) -> root.get("identity").in(authentication.getPrivileges(null)),
-            handler -> 0 < this.privilegeRepository.count(handler.specification().and((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), handler.evaluator().getObject())))
+            authentication -> (root, criteriaQuery, criteriaBuilder) -> root.get("identity").in(authentication.getPrivileges(null)),
+            handler -> 0 < this.privilegeRepository.count(handler.specification().and((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), handler.object())))
         );
     }
 }

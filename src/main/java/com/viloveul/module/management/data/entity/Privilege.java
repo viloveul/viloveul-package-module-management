@@ -4,7 +4,7 @@ import com.viloveul.context.base.AbstractFullEntity;
 import com.viloveul.context.type.AuthorityType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.viloveul.context.auth.AccessControl;
 import lombok.EqualsAndHashCode;
@@ -33,10 +33,10 @@ import java.util.Set;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "tprefix_privilege", schema = "schema")
+@Table(name = "tbl_privilege", schema = "schema")
 @EqualsAndHashCode(callSuper = true, exclude = {"agregates", "scopes"})
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @AccessControl(resource = "PRIVILEGE")
 public class Privilege extends AbstractFullEntity implements GrantedAuthority {
 
@@ -56,7 +56,7 @@ public class Privilege extends AbstractFullEntity implements GrantedAuthority {
     @Valid
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
-        name = "tprefix_privilege_agregate",
+        name = "tbl_privilege_agregate",
         joinColumns = @JoinColumn(name = "id_privilege", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "id_agregate", referencedColumnName = "id")
     )

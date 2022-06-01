@@ -206,18 +206,18 @@ ALTER TABLE tbl_notification DROP CONSTRAINT IF EXISTS tbl_notification_id_reade
 ALTER TABLE tbl_notification ADD CONSTRAINT tbl_notification_id_reader_fk FOREIGN KEY (id_reader) REFERENCES tbl_user(id);
 
 ALTER TABLE tbl_assignment DROP CONSTRAINT IF EXISTS tbl_assignment_id_group_fk;
-ALTER TABLE tbl_assignment ADD CONSTRAINT tbl_assignment_id_group_fk FOREIGN KEY (id_group) REFERENCES tbl_group(id);
+ALTER TABLE tbl_assignment ADD CONSTRAINT tbl_assignment_id_group_fk FOREIGN KEY (id_group) REFERENCES tbl_group(id) ON DELETE CASCADE;
 ALTER TABLE tbl_assignment DROP CONSTRAINT IF EXISTS tbl_assignment_id_delegator_fk;
-ALTER TABLE tbl_assignment ADD CONSTRAINT tbl_assignment_id_delegator_fk FOREIGN KEY (id_delegator) REFERENCES tbl_user(id);
+ALTER TABLE tbl_assignment ADD CONSTRAINT tbl_assignment_id_delegator_fk FOREIGN KEY (id_delegator) REFERENCES tbl_user(id) ON DELETE CASCADE;
 ALTER TABLE tbl_assignment DROP CONSTRAINT IF EXISTS tbl_assignment_id_privilege_fk;
-ALTER TABLE tbl_assignment ADD CONSTRAINT tbl_assignment_id_privilege_fk FOREIGN KEY (id_privilege) REFERENCES tbl_privilege(id);
+ALTER TABLE tbl_assignment ADD CONSTRAINT tbl_assignment_id_privilege_fk FOREIGN KEY (id_privilege) REFERENCES tbl_privilege(id) ON DELETE CASCADE;
 ALTER TABLE tbl_assignment DROP CONSTRAINT IF EXISTS tbl_assignment_id_user_fk;
-ALTER TABLE tbl_assignment ADD CONSTRAINT tbl_assignment_id_user_fk FOREIGN KEY (id_user) REFERENCES tbl_user(id);
+ALTER TABLE tbl_assignment ADD CONSTRAINT tbl_assignment_id_user_fk FOREIGN KEY (id_user) REFERENCES tbl_user(id) ON DELETE CASCADE;
 ALTER TABLE tbl_assignment DROP CONSTRAINT IF EXISTS tbl_assignment_scope_unq;
 ALTER TABLE tbl_assignment ADD CONSTRAINT tbl_assignment_scope_unq UNIQUE (id_delegator, id_privilege, id_user, id_group);
 
 ALTER TABLE tbl_credential DROP CONSTRAINT IF EXISTS tbl_credential_id_user_fk;
-ALTER TABLE tbl_credential ADD CONSTRAINT tbl_credential_id_user_fk FOREIGN KEY (id_user) REFERENCES tbl_user(id);
+ALTER TABLE tbl_credential ADD CONSTRAINT tbl_credential_id_user_fk FOREIGN KEY (id_user) REFERENCES tbl_user(id) ON DELETE CASCADE;
 
 ALTER TABLE tbl_user DROP CONSTRAINT IF EXISTS tbl_user_username_unq;
 ALTER TABLE tbl_user ADD CONSTRAINT tbl_user_username_unq UNIQUE (username);
@@ -241,23 +241,23 @@ ALTER TABLE tbl_group ADD CONSTRAINT tbl_group_id_parent FOREIGN KEY (id_parent)
 ALTER TABLE tbl_scope DROP CONSTRAINT IF EXISTS tbl_scope_authority_unq;
 ALTER TABLE tbl_scope ADD CONSTRAINT tbl_scope_authority_unq UNIQUE (id_privilege, id_resource, id_operation);
 ALTER TABLE tbl_scope DROP CONSTRAINT IF EXISTS tbl_scope_id_privilege_fk;
-ALTER TABLE tbl_scope ADD CONSTRAINT tbl_scope_id_privilege_fk FOREIGN KEY (id_privilege) REFERENCES tbl_privilege(id);
+ALTER TABLE tbl_scope ADD CONSTRAINT tbl_scope_id_privilege_fk FOREIGN KEY (id_privilege) REFERENCES tbl_privilege(id) ON DELETE CASCADE;
 ALTER TABLE tbl_scope DROP CONSTRAINT IF EXISTS tbl_scope_id_resource_fk;
-ALTER TABLE tbl_scope ADD CONSTRAINT tbl_scope_id_resource_fk FOREIGN KEY (id_resource) REFERENCES tbl_resource(id);
+ALTER TABLE tbl_scope ADD CONSTRAINT tbl_scope_id_resource_fk FOREIGN KEY (id_resource) REFERENCES tbl_resource(id) ON DELETE CASCADE;
 ALTER TABLE tbl_scope DROP CONSTRAINT IF EXISTS tbl_scope_id_operation_fk;
-ALTER TABLE tbl_scope ADD CONSTRAINT tbl_scope_id_operation_fk FOREIGN KEY (id_operation) REFERENCES tbl_operation(id);
+ALTER TABLE tbl_scope ADD CONSTRAINT tbl_scope_id_operation_fk FOREIGN KEY (id_operation) REFERENCES tbl_operation(id) ON DELETE CASCADE;
 
 ALTER TABLE tbl_privilege_agregate DROP CONSTRAINT IF EXISTS tbl_privilege_agregate_id_agregate_fk;
-ALTER TABLE tbl_privilege_agregate ADD CONSTRAINT tbl_privilege_agregate_id_agregate_fk FOREIGN KEY (id_agregate) REFERENCES tbl_privilege(id);
+ALTER TABLE tbl_privilege_agregate ADD CONSTRAINT tbl_privilege_agregate_id_agregate_fk FOREIGN KEY (id_agregate) REFERENCES tbl_privilege(id) ON DELETE CASCADE;
 ALTER TABLE tbl_privilege_agregate DROP CONSTRAINT IF EXISTS tbl_privilege_agregate_id_privilege_fk;
-ALTER TABLE tbl_privilege_agregate ADD CONSTRAINT tbl_privilege_agregate_id_privilege_fk FOREIGN KEY (id_privilege) REFERENCES tbl_privilege(id);
+ALTER TABLE tbl_privilege_agregate ADD CONSTRAINT tbl_privilege_agregate_id_privilege_fk FOREIGN KEY (id_privilege) REFERENCES tbl_privilege(id) ON DELETE CASCADE;
 ALTER TABLE tbl_privilege_agregate DROP CONSTRAINT IF EXISTS tbl_privilege_agregate_unq;
 ALTER TABLE tbl_privilege_agregate ADD CONSTRAINT tbl_privilege_agregate_unq UNIQUE (id_privilege, id_agregate);
 
 ALTER TABLE tbl_user_privilege DROP CONSTRAINT IF EXISTS tbl_user_privilege_id_user_fk;
 ALTER TABLE tbl_user_privilege ADD CONSTRAINT tbl_user_privilege_id_user_fk FOREIGN KEY (id_user) REFERENCES tbl_user(id);
 ALTER TABLE tbl_user_privilege DROP CONSTRAINT IF EXISTS tbl_user_privilege_id_privilege_fk;
-ALTER TABLE tbl_user_privilege ADD CONSTRAINT tbl_user_privilege_id_privilege_fk FOREIGN KEY (id_privilege) REFERENCES tbl_privilege(id);
+ALTER TABLE tbl_user_privilege ADD CONSTRAINT tbl_user_privilege_id_privilege_fk FOREIGN KEY (id_privilege) REFERENCES tbl_privilege(id) ON DELETE CASCADE;
 ALTER TABLE tbl_user_privilege DROP CONSTRAINT IF EXISTS tbl_user_privilege_unq;
 ALTER TABLE tbl_user_privilege ADD CONSTRAINT tbl_user_privilege_unq UNIQUE (id_privilege, id_user);
 
@@ -477,3 +477,4 @@ CREATE TRIGGER audit_trail_trigger AFTER INSERT OR UPDATE OR DELETE ON tbl_privi
 
 DROP TRIGGER IF EXISTS audit_trail_trigger ON tbl_user_privilege;
 CREATE TRIGGER audit_trail_trigger AFTER INSERT OR UPDATE OR DELETE ON tbl_user_privilege FOR EACH ROW EXECUTE PROCEDURE audit_trail_setup('id');
+

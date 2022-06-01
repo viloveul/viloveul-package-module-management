@@ -14,6 +14,8 @@ public interface ResourceService {
 
     Resource update(String id, ResourceForm form);
 
+    void delete(String id);
+
     Resource detail(String id);
 
     Resource find(String identity);
