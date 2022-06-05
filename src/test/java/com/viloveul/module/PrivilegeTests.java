@@ -43,7 +43,7 @@ class PrivilegeTests {
 
     @Test
     void testCanCreateAgregate() {
-        Privilege privilege1 = this.privilegeService.find("user-administrating"); // seeder.sql
+        Privilege privilege1 = this.privilegeService.find("user-administrating"); // V1_0_0__00110ALLMANDUM.sql
         Assertions.assertNotNull(privilege1);
         PrivilegeForm formCreate = new PrivilegeForm("Test Create");
         formCreate.setAgregates(Collections.singleton(privilege1.getId()));
