@@ -10,10 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration(
     proxyBeanMethods = false
 )
-public class TokenLoginConfig {
+public class TokenLoginSetupDefault {
 
     @Autowired
-    public void setup(AuthenticationManagerBuilder authenticationManagerBuilder, AuthService authService, PasswordEncoder passwordEncoder) throws Exception {
+    public void setup(AuthenticationManagerBuilder authenticationManagerBuilder, AuthService authService, PasswordEncoder passwordEncoder) {
         authenticationManagerBuilder.authenticationProvider(
             new MultipleCredentialAuthenticationProvider(authService, passwordEncoder)
         );
