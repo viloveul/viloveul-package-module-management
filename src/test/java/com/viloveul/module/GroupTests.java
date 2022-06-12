@@ -44,9 +44,9 @@ class GroupTests {
 
     @Test
     void testCantInfiniteRecursive() {
-        Group group1 = this.groupService.find("SAMPLE-LVL-1"); // check V1_0_0__00110ALLMANDUM.sql
+        Group group1 = this.groupService.find("SAMPLE-LVL-1"); // check V1_0_0_003_002__ALLMANDUM.sql
         Assertions.assertNotNull(group1);
-        Group group2 = this.groupService.find("SAMPLE-LVL-3"); // check V1_0_0__00110ALLMANDUM.sql
+        Group group2 = this.groupService.find("SAMPLE-LVL-3"); // check V1_0_0_003_002__ALLMANDUM.sql
         Assertions.assertNotNull(group2);
 //        GroupForm form = new GroupForm("Test 4");
 //        form.setParent(group2.getId());
